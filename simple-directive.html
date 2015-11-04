@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+
+        var app = angular.module('myApp', []);
+
+        app.controller('MyController', function ($scope) {
+            $scope.message = 'Message from MyController ... ';
+        });
+
+        app.run(function ($rootScope) {
+            $rootScope.message = 'Message from rootScope';
+        });
+
+        app.directive('hello', function () {
+            return {
+                // Directive Definition Object
+                restrict: 'AEC',
+                // template: '<div>Hello from Likhita</div>'
+                templateUrl: '_hello.html',
+                scope: true,
+                link: function (scope, element, attrs) {
+                    scope.message = 'This is coming from the directive';
+
+                    var n = 0;
+
+                    element.on('click', function () {
+                        // alert('You clicked on the directive ... ');
+
+
+                        scope.message = 'You have clicked on the directive ' + ++n +
+                                ' time(s)';
+                        scope.$digest();
+
+                        /*scope.$apply(function () {
+                            scope.message = 'You have clicked on the directive ' + ++n +
+                                    ' time(s)';
+
+                        });*/
+
+                        console.log(scope.message);
+
+                    });
+
+
+                }
+            }
+        });
+
+    </script>
+</head>
+<body>
+
+    {{message}}
+
+    <div hello></div>
+    <div class="hello"></div>
+    <hello></hello>
+
+    Directives are markers on the DOM
+    Reusable components
+    <a href="https://docs.angularjs.org/guide/directive">Directive Basics</a>
+    <a href="https://docs.angularjs.org/api/ng/service/$compile">Directive Advanced</a>
+
+    <section>
+
+        <h2>Directive Scopes</h2>
+        <ul>
+            <li>
+
+            <em>$scope<sub>directive</sub> = $scope<sub>scope in effect</sub> </em> when <code>scope: false</code>
+
+            </li>
+
+            <li>
+
+                <em>$scope<sub>directive</sub> is a child of $scope<sub>scope in effect</sub> </em> when <code>scope: true</code>
+
+            </li>
+
+            <li>
+
+                <em>$scope<sub>directive</sub> is <strong>completely unrelated to</strong> $scope<sub>scope in effect</sub> </em> when <code>scope: {
+                    ...
+                }</code>
+
+            </li>
+        </ul>
+
+    </section>
+
+    <ul>
+        <li>What is the difference between the config and run phases?</li>
+        <li>What are the three inputs to the scope ?</li>
+    </ul>
+
+    <div ng-controller="MyController">
+        {{message}}
+
+        <div hello></div>
+    </div>
+
+
+
+</body>
+</html>
